@@ -10,18 +10,18 @@ An automated parking barrier gate access controller modeled in VHDL. Utilizes a 
 stateDiagram-v2
     [*] --> idle
     
-    idle --> waitting : outside_sensor = 1 (vehicle detected)
-    idle --> idle : outside_sensor = 0
+    idle --> waitting : outside_sensor is 1 (vehicle detected)
+    idle --> idle : outside_sensor is 0
     
-    waitting --> correct_password : password == "0111" (access granted)
-    waitting --> wrong_password : password != "0111" (access denied)
-    waitting --> stop : timeout (counter >= 0xFFFFF)
+    waitting --> correct_password : valid password 0111 (access granted)
+    waitting --> wrong_password : wrong password (access denied)
+    waitting --> stop : timeout (counter reaches 0xFFFFF)
     
-    wrong_password --> correct_password : retry password == "0111"
-    wrong_password --> stop : retry timeout (counter >= 0x11111)
+    wrong_password --> correct_password : retry password 0111
+    wrong_password --> stop : retry timeout (counter reaches 0x11111)
     
-    correct_password --> stop : inside_sensor = 1 (vehicle entered)
-    correct_password --> correct_password : inside_sensor = 0 (vehicle in transit)
+    correct_password --> stop : inside_sensor is 1 (vehicle entered)
+    correct_password --> correct_password : inside_sensor is 0 (vehicle in transit)
     
     stop --> idle : automatic reset cycle
 ```
